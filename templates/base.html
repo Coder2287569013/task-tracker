@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    {% endblock %}
+</head>
+<body>
+    <nav>
+        <a href="{% url 'task-list' %}">Task List</a>
+        <a href="{% url 'task-form' %}">Create a task</a>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
