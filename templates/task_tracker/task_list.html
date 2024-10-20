@@ -10,16 +10,31 @@
     {{ form.status }}
     <button type="submit">Submit</button>
 </form>
-
-<ul>
+<div class="list-group">
     {% for task in tasks %}
-        <li>
-            <a href="{% url 'task-detail' task.pk %}">{{ task.title }}</a>
-            <p>{{ task.status }}</p>
-            <p>{{ task.priority }}</p>
-        </li>
+        <a href="{% url 'task-detail' task.pk %}" class="list-group-item list-group-item-action">
+            {{ task.title }}
+
+            {% if task.status == "todo" %}
+                <span class="badge rounded-pill text-bg-secondary">To Do</span>
+            {% elif task.status == "in_progress" %}
+                <span class="badge rounded-pill text-bg-primary">In Progress</span>
+            {% else %}
+                <span class="badge rounded-pill text-bg-success">Done</span>
+            {% endif %}
+
+            {% if task.priority == "low" %}
+                <span class="badge rounded-pill text-bg-success">Low</span>
+            {% elif task.priority == "medium" %}
+                <span class="badge rounded-pill text-bg-warning">Medium</span>
+            {% else %}
+                <span class="badge rounded-pill text-bg-danger">High</span>
+            {% endif %}
+        </a>
+        <!-- <p>{{ task.status }}</p>
+        <p>{{ task.priority }}</p> -->
     {% empty %}
     <p>No tasks found</p>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}
