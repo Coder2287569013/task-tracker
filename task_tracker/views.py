@@ -1,10 +1,10 @@
 # from django.forms import BaseModelForm
 # from django.http import HttpResponse
-# from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import TaskForm, TaskFilterForm
+from .forms import TaskForm, TaskFilterForm, CommentForm
 from .models import Task
 from .mixins import UserIsOwnerMixin
 # Create your views here.
@@ -30,6 +30,25 @@ class TaskListView(ListView):
 class TaskDetailView(DetailView):
     model = Task
     context_object_name = 'task'
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.task = self.get_object()
+            comment.save()
+            return redirect('task-detail', pk=comment.task.pk)
 
 
 class TaskCreateView(CreateView):

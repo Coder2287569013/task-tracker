@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task
+from .models import Task, Comment
 
 class TaskForm(forms.models.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -20,3 +20,9 @@ class TaskFilterForm(forms.Form):
         ('done', 'Done'),
     ]
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False, label='status')
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
