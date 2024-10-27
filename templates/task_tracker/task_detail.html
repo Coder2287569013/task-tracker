@@ -28,16 +28,19 @@
                 <p>{{ comment.content }}</p> 
                 {% if comment.media %} 
                     {% if comment.media.url|endswith:".jpg" or comment.media.url|endswith:".png" or comment.media.url|endswith:".jpeg" %} 
-                <img src="{{ comment.media.url }}" alt="img"> 
+                        <img src="{{ comment.media.url }}" alt="img"> 
                     {% elif comment.media.url|endswith:".mp4" %} 
-                <video width="max" height="10" controls> 
-                    <source src="{{ comment.media.url }}" type="video/mp4" > 
-                </video> 
+                        <video width="max" height="10" controls> 
+                            <source src="{{ comment.media.url }}" type="video/mp4" > 
+                        </video> 
                     {% else %} 
-                <a href="{{ comment.media.url }}">Download</a> 
+                        <a href="{{ comment.media.url }}">Download</a> 
                     {% endif %} 
-                {% endif %} 
-                <a href="{% url 'comment-update' comment.pk %}">Update comment</a>
+                {% endif %}
+                {% if comment.creator == request.user %}
+                    <a href="{% url 'comment-update' comment.pk %}">Update comment</a>
+                    <a href="{% url 'comment-delete' comment.pk %}">Delete comment</a>
+                {% endif %}
             </li> 
         {% endfor %}
       </ul>
