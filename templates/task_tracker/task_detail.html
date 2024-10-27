@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+{% load custom_tags %}
 <link rel="stylesheet" href="{% static 'css/style_form.css' %}">
     <h1>{{ task.title }}</h1>
     <p>{{ task.description }}</p>
@@ -13,7 +14,7 @@
     <a href="{% url 'task-update' task.pk %}">Update task</a>
 
 
-    <form class="comment-form" method="post" action="{% url 'task-detail' task.pk %}">
+    <form class="comment-form" method="post" action="{% url 'task-detail' task.pk %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ comment_form.as_p }}
         <div class="d-flex justify-content-end"><button type="submit">Submit</button></div>
@@ -21,12 +22,23 @@
 
     <h3>Comments</h3>
     <ul class="list-group">
-        {% for comment in task.comments.all %}
-            <li class="list-group-item">
-                <p class="pb2">{{ comment.creator }}</p>
-                {{ comment.content }}
+        {% for comment in task.comments.all %} 
+            <li> 
+                <p>{{ comment.creator }}</p> 
+                <p>{{ comment.content }}</p> 
+                {% if comment.media %} 
+                    {% if comment.media.url|endswith:".jpg" or comment.media.url|endswith:".png" or comment.media.url|endswith:".jpeg" %} 
+                <img src="{{ comment.media.url }}" alt="img"> 
+                    {% elif comment.media.url|endswith:".mp4" %} 
+                <video width="max" height="10" controls> 
+                    <source src="{{ comment.media.url }}" type="video/mp4" > 
+                </video> 
+                    {% else %} 
+                <a href="{{ comment.media.url }}">Download</a> 
+                    {% endif %} 
+                {% endif %} 
                 <a href="{% url 'comment-update' comment.pk %}">Update comment</a>
-            </li>
+            </li> 
         {% endfor %}
       </ul>
 {% endblock %}

@@ -34,20 +34,9 @@ input {
 }
 
 .comment-form textarea {
-    width: 110em;
+    width: 100rem; 
     flex-grow: 1;
-    height: 4em; 
-    padding: 10px;
-    margin-bottom: 0;
-    border: 1px solid;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.comment-form textarea {
-    width: 110rem; 
-    flex-grow: 1;
-    min-height: 4rem; 
+    height: 4rem; 
     padding: 10px;
     margin: 0;
     border: 1px solid #ccc; 
