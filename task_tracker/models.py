@@ -26,4 +26,17 @@ class Comment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="comments")
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     content = models.TextField()
+    media = models.FileField(upload_to='comments_media/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return self.task.get_absolute_url()
+
+
+class Like(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_comments')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('comment', 'user')
