@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Update Comment</title>
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_form.css' %}">
+<form class="comment-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="d-flex justify-content-end"><button type="submit">Submit</button></div>
+</form>
+{% endblock %}
