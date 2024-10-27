@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import TaskForm, TaskFilterForm, CommentForm
-from .models import Task
+from .models import Task, Comment
 from .mixins import UserIsOwnerMixin
 # Create your views here.
 
@@ -45,7 +45,7 @@ class TaskDetailView(DetailView):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.author = request.user
+            comment.creator = request.user
             comment.task = self.get_object()
             comment.save()
             return redirect('task-detail', pk=comment.task.pk)
@@ -66,3 +66,10 @@ class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     form_class = TaskForm
     success_url = reverse_lazy('task-list')
 
+class CommentUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    
+    def get_success_url(self):
+        task = self.object.task
+        return reverse_lazy('task-detail', kwargs={'pk': task.pk})

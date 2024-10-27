@@ -23,8 +23,9 @@
     <ul class="list-group">
         {% for comment in task.comments.all %}
             <li class="list-group-item">
-                <p class="pb2">{{ comment.author }}</p>
+                <p class="pb2">{{ comment.creator }}</p>
                 {{ comment.content }}
+                <a href="{% url 'comment-update' comment.pk %}">Update comment</a>
             </li>
         {% endfor %}
       </ul>
