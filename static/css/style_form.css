@@ -44,7 +44,7 @@ input {
     box-sizing: border-box;
 }
 
-form>button {
+form>button, form>a {
     background-color: #46bb48;
     color: white;
     padding: 10px 20px;

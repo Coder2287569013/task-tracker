@@ -1,7 +1,7 @@
 # from django.forms import BaseModelForm
 # from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import TaskForm, TaskFilterForm, CommentForm
@@ -70,6 +70,13 @@ class CommentUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     
+    def get_success_url(self):
+        task = self.object.task
+        return reverse_lazy('task-detail', kwargs={'pk': task.pk})
+
+class CommentDeleteView(UserIsOwnerMixin, DeleteView):
+    model = Comment
+
     def get_success_url(self):
         task = self.object.task
         return reverse_lazy('task-detail', kwargs={'pk': task.pk})
