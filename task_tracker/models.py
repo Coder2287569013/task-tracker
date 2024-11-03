@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 # Create your models here.
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -21,6 +21,8 @@ class Task(models.Model):
     due_date = models.DateTimeField(blank=True, null=True)
     creator = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="tasks")
 
+    def get_absolute_url(self):
+        return reverse("task-detail", kwargs={'pk': self.pk})
 
 class Comment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="comments")
