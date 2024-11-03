@@ -41,6 +41,12 @@
                     <a href="{% url 'comment-update' comment.pk %}">Update comment</a>
                     <a href="{% url 'comment-delete' comment.pk %}">Delete comment</a>
                 {% endif %}
+                <form method="post" action="{% url 'comment-toggle-like' comment.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm {% if request.user in comment.likes.all %}btn-success{% else %}btn-outline-success{% endif %}">
+                        Like {{comment.likes.count}}
+                    </button>
+                </form>
             </li> 
         {% endfor %}
       </ul>
