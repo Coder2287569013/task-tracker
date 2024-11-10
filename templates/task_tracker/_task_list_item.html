@@ -1,0 +1,36 @@
+<a href="{% url 'task-detail' task.pk %}" class="list-group-item list-group-item-action">
+    {{ task.title }}
+    
+    {% if task.status == "todo" %}
+        <span class="badge rounded-pill text-bg-secondary">To Do</span>
+    {% elif task.status == "in_progress" %}
+        <span class="badge rounded-pill text-bg-primary">In Progress</span>
+    {% else %}
+        <span class="badge rounded-pill text-bg-success">Done</span>
+    {% endif %}
+
+    <span class="badge rounded-pill 
+    {% if task.priority == 'low' %}
+        text-bg-success
+    {% elif task.priority == 'medium' %}
+        text-bg-warning
+    {% else %}
+        text-bg-danger
+    {% endif %}">{{task.get_priority_display}}</span>
+
+    <span class="badge rounded-pill 
+    {% if task.is_overdue %}
+        text-bg-danger 
+    {% else %}
+        text-bg-success  
+    {% endif %}">
+        {% if not task.is_overdue %}
+            {% if task.months_diff > 0 %}
+                {{task.months_diff}} month(-s)
+            {% endif %}
+            {{task.days_diff}} day(-s) remaining
+        {% else %}
+            Overdue
+        {% endif %}
+    </span>
+</a>

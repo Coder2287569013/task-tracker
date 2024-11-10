@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.utils import timezone
 from .forms import TaskForm, TaskFilterForm, CommentForm
 from .models import Like, Task, Comment
 from .mixins import UserIsOwnerMixin
@@ -29,6 +30,15 @@ class TaskListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = TaskFilterForm(self.request.GET)
+        context['priorities'] = ['Low', 'Medium', 'High']
+        
+        for task in context['tasks']:
+            time_diff = task.due_date - timezone.now()
+            months = time_diff.days // 30
+            days = time_diff.days % 30
+            task.months_diff = months
+            task.days_diff = days
+            task.is_overdue = time_diff.total_seconds() < 0
 
         return context
 

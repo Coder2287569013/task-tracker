@@ -28,11 +28,8 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'task-form' %}">Create a task</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'task-form' %}">Create a task</a>
-                </li>
                 {% if user.is_authenticated %}
-                  <form class="nav-item" action="{% url 'logout' %}" method="post">
+                  <form class="nav-item" id="logoutB" action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="nav-link">Logout</button>
                   </form>
