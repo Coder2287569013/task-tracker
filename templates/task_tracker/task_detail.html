@@ -9,9 +9,10 @@
 {% load custom_tags %}
 <link rel="stylesheet" href="{% static 'css/style_form.css' %}">
     <h1>{{ task.title }}</h1>
-    <p>{{ task.description }}</p>
-    <p>{{ task.priority }}</p>
-    <a href="{% url 'task-update' task.pk %}">Update task</a>
+    <p><b>Description:</b> {{ task.description }}</p>
+    <p><b>Priority: </b>{{ task.priority }}</p>
+    <p><b>Due date: </b>{{ task.due_date }}</p>
+    <a class="btn btn-primary" href="{% url 'task-update' task.pk %}">Update task</a>
 
 
     <form class="comment-form" method="post" action="{% url 'task-detail' task.pk %}" enctype="multipart/form-data">
@@ -24,7 +25,7 @@
     <ul class="list-group">
         {% for comment in task.comments.all %} 
             <li> 
-                <p>{{ comment.creator }}</p> 
+                <p>Creator: {{ comment.creator }}</p> 
                 <p>{{ comment.content }}</p> 
                 {% if comment.media %} 
                     {% if comment.media.url|endswith:".jpg" or comment.media.url|endswith:".png" or comment.media.url|endswith:".jpeg" %} 
@@ -38,10 +39,10 @@
                     {% endif %} 
                 {% endif %}
                 {% if comment.creator == request.user %}
-                    <a href="{% url 'comment-update' comment.pk %}">Update comment</a>
-                    <a href="{% url 'comment-delete' comment.pk %}">Delete comment</a>
+                    <a class="btn btn-primary" href="{% url 'comment-update' comment.pk %}">Update comment</a>
+                    <a class="btn btn-danger" href="{% url 'comment-delete' comment.pk %}">Delete comment</a>
                 {% endif %}
-                <form method="post" action="{% url 'comment-toggle-like' comment.id %}">
+                <form method="post" class="likeForm" action="{% url 'comment-toggle-like' comment.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm {% if request.user in comment.likes.all %}btn-success{% else %}btn-outline-success{% endif %}">
                         Like {{comment.likes.count}}

@@ -54,6 +54,18 @@ form>button, form>a {
     width: 100%;
     text-decoration: none;
 }
+.likeForm {
+    margin: 0;
+    width: 10%;
+}
+
+#logoutB {
+    all: unset;
+}
+#logoutB>button {
+    background-color: unset;
+    width: 0%;
+}
 
 .comment-form button {
     float: right;
