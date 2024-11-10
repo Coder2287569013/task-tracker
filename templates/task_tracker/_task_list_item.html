@@ -19,7 +19,7 @@
     {% endif %}">{{task.get_priority_display}}</span>
 
     <span class="badge rounded-pill 
-    {% if task.is_overdue %}
+    {% if task.is_overdue and task.status != 'done' %}
         text-bg-danger 
     {% else %}
         text-bg-success  
@@ -29,7 +29,7 @@
                 {{task.months_diff}} month(-s)
             {% endif %}
             {{task.days_diff}} day(-s) remaining
-        {% else %}
+        {% elif task.is_overdue and task.status != 'done' %}
             Overdue
         {% endif %}
     </span>
